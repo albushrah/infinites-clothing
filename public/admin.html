@@ -56,7 +56,19 @@
                 align-items: center; 
             }
             .nav-item { white-space: nowrap; margin-bottom: 0; padding: 10px 15px; font-size: 12px; }
-            .nav-item.logout { margin-top: 0; margin-left: auto; }
+                        /* Fix the Exit Button to the bottom right of the screen */
+            .nav-item.logout { 
+                position: fixed; 
+                bottom: 20px; 
+                right: 20px; 
+                background-color: #ff4444; 
+                color: white; 
+                z-index: 9999; 
+                padding: 12px 20px; 
+                border-radius: 50px; 
+                box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+                margin: 0;
+            }
             .logo { display: none; } /* Hide logo to save space */
 
             .main-content { padding: 20px; }
