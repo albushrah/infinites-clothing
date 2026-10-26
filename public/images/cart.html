@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Bag | NOIRFRAME</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,400;0,600;1,600&display=swap" rel="stylesheet">
+    <style>
+        :root { --black: #050505; --white: #ffffff; --gold: #cba052; --gray: #151515; --border: #333; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--black); color: var(--white); font-family: 'Montserrat', sans-serif; }
+
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 60px; border-bottom: 1px solid var(--border); }
+        .logo-text { font-size: 28px; font-weight: 800; letter-spacing: 8px; color: var(--white); text-decoration: none; }
+        .nav-links a { color: var(--white); text-decoration: none; margin-left: 40px; font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+
+        .cart-container { max-width: 1000px; margin: 60px auto; padding: 0 20px; }
+        .cart-title { font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 40px; text-align: center; }
+
+        .cart-item { display: flex; align-items: center; gap: 30px; background-color: var(--gray); padding: 20px; margin-bottom: 20px; border-radius: 4px; }
+        .cart-item img { width: 100px; height: 100px; object-fit: cover; border-radius: 4px; background: #f0f0f0; }
+        .item-details { flex: 1; }
+        .item-name { font-size: 1.2rem; font-weight: 600; margin-bottom: 5px; }
+        .item-meta { font-size: 0.9rem; color: #aaa; margin-bottom: 10px; }
+        .item-price { color: var(--gold); font-weight: 800; font-size: 1.1rem; }
+        
+        .remove-btn { background: transparent; border: 1px solid #ff4444; color: #ff4444; padding: 8px 15px; cursor: pointer; transition: 0.3s; border-radius: 4px; }
+        .remove-btn:hover { background: #ff4444; color: white; }
+
+        .cart-summary { margin-top: 40px; padding: 30px; background-color: var(--gray); border-radius: 4px; text-align: right; border-top: 2px solid var(--gold); }
+        .total-text { font-size: 1.2rem; margin-bottom: 20px; }
+        .total-price { font-size: 2rem; font-weight: 800; color: var(--gold); }
+        .checkout-btn { display: inline-block; margin-top: 20px; padding: 15px 40px; background-color: var(--white); color: var(--black); text-decoration: none; font-weight: 800; letter-spacing: 2px; transition: 0.3s; border: none; cursor: pointer; border-radius: 4px; }
+        .checkout-btn:hover { background-color: var(--gold); color: var(--white); }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo-text">NOIRFRAME</a>
+        <div class="nav-links">
+            <a href="shop.html">Shop</a>
+            <a href="cart.html" style="color: var(--gold);">Cart</a>
+        </div>
+    </nav>
+
+    <div class="cart-container">
+        <h1 class="cart-title">Your Bag</h1>
+        <div id="cart-items-container">
+            <!-- Items will load here -->
+        </div>
+        
+        <div class="cart-summary" id="cart-summary" style="display: none;">
+            <p class="total-text">Subtotal: <span class="total-price" id="cart-total">₦0</span></p>
+            <p style="color: #aaa; font-size: 12px; margin-bottom: 20px;">Delivery and taxes calculated at checkout.</p>
+            <a href="#" class="checkout-btn" onclick="alert('Checkout page coming next!')">PROCEED TO CHECKOUT</a>
+        </div>
+    </div>
+
+    <script>
+        let cartData = [];
+
+        function loadCart() {
+            fetch('/api/cart')
+                .then(res => res.json())
+                .then(data => {
+                    cartData = data;
+                    renderCart();
+                });
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cart-items-container');
+            const summary = document.getElementById('cart-summary');
+            container.innerHTML = '';
+
+            if (cartData.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #888;">Your bag is empty.</p>';
+                summary.style.display = 'none';
+                return;
+            }
+
+            let total = 0;
+
+            cartData.forEach(item => {
+                total += (item.price * item.quantity);
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'cart-item';
+                itemDiv.innerHTML = `
+                    <img src="${item.image}" alt="${item.product_name}">
+                    <div class="item-details">
+                        <h3 class="item-name">${item.product_name}</h3>
+                        <p class="item-meta">Color: ${item.color} | Size: ${item.size} | Qty: ${item.quantity}</p>
+                        <p class="item-price">₦${item.price.toLocaleString()}</p>
+                    </div>
+                    <button class="remove-btn" onclick="removeItem(${item.id})">Remove</button>
+                `;
+                container.appendChild(itemDiv);
+            });
+
+            document.getElementById('cart-total').innerText = `₦${total.toLocaleString()}`;
+            summary.style.display = 'block';
+        }
+
+        function removeItem(id) {
+            fetch(`/api/cart/${id}`, { method: 'DELETE' })
+                .then(res => res.json())
+                .then(() => loadCart());
+        }
+
+        loadCart();
+    </script>
+</body>
+</html>

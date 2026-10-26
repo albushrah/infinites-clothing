@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Bag | NOIRFRAME</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,400;0,600;1,600&display=swap" rel="stylesheet">
+    <style>
+           :root { --black: #333333; --white: #ffffff; --bone: #e8e4d9; --gold: #cba052; --gray: #444444; --border: #555; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--black); color: var(--white); font-family: 'Montserrat', sans-serif; }
+
+        /* Navigation */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 60px; border-bottom: 1px solid var(--border); }
+        .logo-text { font-size: 28px; font-weight: 800; letter-spacing: 8px; color: var(--bone); text-decoration: none; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: var(--bone); text-decoration: none; font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; }
+        .nav-links a:hover { color: var(--gold); }
+        
+        /* Hamburger Menu Icon */
+        .menu-toggle { display: none; font-size: 30px; color: var(--bone); cursor: pointer; }
+
+        /* Main Container */
+        .cart-container { max-width: 1300px; margin: 50px auto; padding: 0 40px; }
+        
+        /* Header Area */
+        .cart-header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .continue-shopping { color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
+        .continue-shopping:hover { color: var(--white); }
+        .cart-title { font-size: 3rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 40px; }
+        .cart-count { font-size: 14px; color: #aaa; }
+
+        /* Layout Grid (Left Items, Right Summary) */
+        .cart-layout { display: flex; gap: 60px; }
+        
+        /* Left Side: Items List */
+        .cart-items { flex: 2; display: flex; flex-direction: column; gap: 30px; }
+        .cart-item { display: flex; align-items: center; gap: 30px; padding-bottom: 30px; border-bottom: 1px solid var(--border); }
+        .cart-item img { width: 120px; height: 140px; object-fit: cover; border-radius: 4px; background: #fff; }
+        .item-details { flex: 1; }
+        .item-name { font-size: 1.1rem; font-weight: 600; margin-bottom: 10px; }
+        .item-meta { font-size: 13px; color: #bbb; line-height: 1.6; margin-bottom: 15px; }
+        .item-remove { background: transparent; border: none; color: #888; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-decoration: underline; cursor: pointer; transition: 0.3s; }
+        .item-remove:hover { color: #ff4444; }
+        .item-price { font-size: 1rem; font-weight: 600; }
+
+        /* Right Side: Order Summary */
+        .order-summary { flex: 1; background: var(--gray); padding: 30px; border-radius: 4px; height: fit-content; position: sticky; top: 40px; }
+        .order-summary h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 25px; letter-spacing: 1px; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 14px; color: #bbb; }
+        .summary-total { display: flex; justify-content: space-between; margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border); font-weight: 800; font-size: 1.2rem; color: var(--white); }
+        .shipping-note { font-size: 11px; color: #777; margin-top: 15px; margin-bottom: 30px; }
+        
+        /* Buttons */
+        .checkout-btn { width: 100%; padding: 20px; background: var(--white); color: var(--black); border: none; font-size: 13px; font-weight: 800; letter-spacing: 1px; cursor: pointer; transition: 0.3s; display: block; text-align: center; text-decoration: none; margin-bottom: 15px; }
+        .checkout-btn:hover { background: var(--gold); color: var(--white); }
+        .demo-note { font-size: 11px; color: #777; text-align: center; margin-bottom: 20px; }
+        .continue-link-bottom { display: block; text-align: center; color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px; }
+        .continue-link-bottom:hover { color: var(--white); }
+
+        /* Empty Cart State */
+        .empty-cart { text-align: center; padding: 80px 0; }
+        .empty-cart h2 { font-size: 1.5rem; margin-bottom: 20px; }
+        .empty-cart a { color: var(--gold); text-decoration: none; font-weight: 600; }
+
+        /* --- MOBILE RESPONSIVENESS & HAMBURGER MENU --- */
+        @media (max-width: 768px) {
+            nav { flex-direction: row; justify-content: space-between; padding: 20px; position: relative; }
+            .menu-toggle { display: block; }
+            
+            /* Dropdown Menu */
+            .nav-links {
+                display: none; 
+                flex-direction: column;
+                width: 100%;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background-color: var(--black);
+                padding: 20px;
+                gap: 20px;
+                text-align: center;
+                border-bottom: 1px solid var(--border);
+                z-index: 1000;
+            }
+            .nav-links.active { display: flex; }
+            .nav-links a { margin-left: 0; font-size: 14px; }
+
+            /* Layout adjustments */
+            .cart-container { padding: 0 20px; margin: 30px auto; }
+            .cart-title { font-size: 2.5rem; margin-bottom: 20px; }
+            .cart-header-top { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .cart-layout { flex-direction: column; gap: 40px; }
+            
+            /* Cart Items */
+            .cart-item { flex-direction: column; align-items: flex-start; position: relative; }
+            .cart-item img { width: 100%; height: 300px; }
+            .item-price { position: absolute; top: 20px; right: 0; font-size: 1.1rem; }
+            
+            /* Summary */
+            .order-summary { position: static; width: 100%; padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div style="display: flex; align-items: center;">
+            <img src="images/favicon.png" alt="NF Logo" style="height: 70px; width: auto;">
+        </div>
+        
+        <!-- Hamburger Icon (Mobile) -->
+        <div class="menu-toggle" id="mobile-menu">&#9776;</div>
+
+        <!-- Navigation Links -->
+        <div class="nav-links" id="nav-links">
+            <a href="index.html">Home</a>
+            <a href="shop.html">Shop</a>
+            <a href="index.html#shop">Collections</a>
+            <a href="cart.html" style="color: var(--gold);">Cart</a>
+        </div>
+    </nav>
+
+    <div class="cart-container">
+        <div class="cart-header-top">
+            <a href="shop.html" class="continue-shopping">&larr; CONTINUE SHOPPING</a>
+            <span class="cart-count" id="cart-count-text">0 items</span>
+        </div>
+        
+        <h1 class="cart-title">YOUR BAG</h1>
+
+        <div class="cart-layout" id="cart-layout">
+            <div class="cart-items" id="cart-items"></div>
+
+            <div class="order-summary" id="order-summary">
+                <h3>ORDER SUMMARY</h3>
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="cart-subtotal">₦0</span>
+                </div>
+                <p class="shipping-note">Shipping and any applicable fees are not included.</p>
+                <div class="summary-total">
+                    <span>Total</span>
+                    <span id="cart-total">₦0</span>
+                </div>
+                
+                <a href="checkout.html" class="checkout-btn">PROCEED TO CHECKOUT</a>
+                <p class="demo-note">Demo store. Checkout is not active.</p>
+                <a href="shop.html" class="continue-link-bottom">CONTINUE SHOPPING</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Hamburger Menu Logic
+        document.addEventListener("DOMContentLoaded", () => {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navLinks = document.getElementById('nav-links');
+            if (mobileMenu && navLinks) {
+                mobileMenu.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                });
+            }
+        });
+
+        let cartData = [];
+
+        function loadCart() {
+            fetch('/api/cart')
+                .then(res => res.json())
+                .then(data => {
+                    cartData = data;
+                    renderCart();
+                });
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cart-items');
+            const layout = document.getElementById('cart-layout');
+            const summary = document.getElementById('order-summary');
+            const countText = document.getElementById('cart-count-text');
+            
+            container.innerHTML = '';
+
+            if (cartData.length === 0) {
+                layout.style.display = 'block'; 
+                summary.style.display = 'none'; 
+                countText.innerText = '0 items';
+                container.innerHTML = `
+                    <div class="empty-cart">
+                        <h2>Your bag is currently empty.</h2>
+                        <a href="shop.html">Explore the collection &rarr;</a>
+                    </div>
+                `;
+                return;
+            }
+
+            layout.style.display = 'flex'; 
+            summary.style.display = 'block';
+
+            let totalQuantity = 0;
+            let subtotal = 0;
+
+            cartData.forEach(item => {
+                totalQuantity += item.quantity;
+                subtotal += (item.price * item.quantity);
+
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'cart-item';
+                itemDiv.innerHTML = `
+                    <img src="${item.image}" alt="${item.product_name}">
+                    <div class="item-details">
+                        <h3 class="item-name">${item.product_name}</h3>
+                        <p class="item-meta">
+                            Colour: ${item.color}<br>
+                            Size: ${item.size}<br>
+                            Quantity: ${item.quantity}
+                        </p>
+                        <button class="item-remove" onclick="removeItem(${item.id})">REMOVE</button>
+                    </div>
+                    <div class="item-price">₦${(item.price * item.quantity).toLocaleString()}</div>
+                `;
+                container.appendChild(itemDiv);
+            });
+
+            countText.innerText = `${totalQuantity} items`;
+            document.getElementById('cart-subtotal').innerText = `₦${subtotal.toLocaleString()}`;
+            document.getElementById('cart-total').innerText = `₦${subtotal.toLocaleString()}`;
+        }
+
+        function removeItem(id) {
+            fetch(`/api/cart/${id}`, { method: 'DELETE' })
+                .then(res => res.json())
+                .then(() => loadCart());
+        }
+
+        // Load cart on page open
+        loadCart();
+    </script>
+</body>
+</html>

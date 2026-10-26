@@ -1,0 +1,16 @@
+{
+  "name": "NOIRFRAME",
+  "version": "1.0.0",
+  "description": "NOIRFRAME E-Commerce",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^12.0.0",
+    "express": "^4.19.2",
+    "multer": "^2.5.0"
+  }
+}

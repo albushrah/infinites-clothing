@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOIRFRAME | Product</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,400;0,600;1,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #050505;
+            --white: #ffffff;
+            --bone: #e8e4d9;
+            --gold: #cba052;
+            --gray: #151515;
+            --light-gray: #222222;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--black); color: var(--white); font-family: 'Montserrat', sans-serif; }
+
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 60px; border-bottom: 1px solid var(--light-gray); }
+        .nav-left { display: flex; align-items: center; gap: 20px; }
+        .back-arrow { color: var(--white); text-decoration: none; font-size: 24px; }
+        
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: var(--bone); text-decoration: none; font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; }
+        .nav-links a:hover { color: var(--gold); }
+        
+        /* Hamburger Menu Icon */
+        .menu-toggle { display: none; font-size: 30px; color: var(--bone); cursor: pointer; }
+
+        .product-container { display: flex; max-width: 1400px; margin: 50px auto; padding: 0 40px; gap: 60px; }
+        .image-section { flex: 1; background-color: #f0f0f0; border-radius: 4px; display: flex; justify-content: center; align-items: center; padding: 40px; }
+        .image-section img { width: 100%; max-width: 600px; height: auto; object-fit: contain; transition: opacity 0.3s ease; }
+        .details-section { flex: 1; padding-top: 20px; }
+        
+        .breadcrumb { font-size: 12px; color: #888; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+        .product-title { font-size: 3rem; font-weight: 800; margin-bottom: 10px; }
+        .product-price { font-size: 1.5rem; color: var(--gold); margin-bottom: 30px; font-weight: 600; }
+        .product-desc { color: #aaa; line-height: 1.6; margin-bottom: 40px; font-size: 0.95rem; }
+
+        .options-title { font-size: 14px; font-weight: 600; margin-bottom: 15px; letter-spacing: 1px; }
+        .color-options { display: flex; gap: 15px; margin-bottom: 40px; }
+        
+        .color-btn {
+            padding: 10px 20px;
+            background-color: transparent;
+            border: 1px solid var(--light-gray);
+            color: var(--white);
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .color-btn:hover, .color-btn.active { border-color: var(--gold); color: var(--gold); }
+        .color-dot { width: 15px; height: 15px; border-radius: 50%; border: 1px solid #555; }
+
+        .size-options { display: flex; gap: 15px; margin-bottom: 40px; }
+        .size-btn {
+            width: 50px; height: 50px; background-color: transparent; border: 1px solid var(--light-gray); color: var(--white);
+            cursor: pointer; transition: 0.3s; border-radius: 4px; font-size: 14px;
+        }
+        .size-btn:hover, .size-btn.active { border-color: var(--gold); color: var(--gold); }
+        .size-btn:disabled { opacity: 0.3; cursor: not-allowed; text-decoration: line-through; }
+
+        .add-to-cart { width: 100%; padding: 20px; background-color: var(--white); color: var(--black); border: none; font-size: 14px; font-weight: 800; letter-spacing: 2px; cursor: pointer; transition: 0.3s; border-radius: 4px; margin-bottom: 20px; }
+        .add-to-cart:hover { background-color: var(--gold); color: var(--white); }
+        .cart-message { font-size: 12px; color: #888; text-align: center; }
+
+        /* --- MOBILE RESPONSIVENESS & HAMBURGER MENU --- */
+        @media (max-width: 768px) {
+            nav { flex-direction: row; justify-content: space-between; padding: 20px; position: relative; }
+            .menu-toggle { display: block; }
+            
+            /* Dropdown Menu */
+            .nav-links {
+                display: none; 
+                flex-direction: column;
+                width: 100%;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background-color: var(--black);
+                padding: 20px;
+                gap: 20px;
+                text-align: center;
+                border-bottom: 1px solid var(--light-gray);
+                z-index: 1000;
+            }
+            .nav-links.active { display: flex; }
+            .nav-links a { margin-left: 0; font-size: 14px; }
+
+            /* Stack product image and details */
+            .product-container { flex-direction: column; margin: 20px auto; padding: 0 20px; gap: 30px; }
+            .image-section { padding: 20px; }
+            .image-section img { max-width: 100%; }
+            .product-title { font-size: 2rem; }
+            .product-price { font-size: 1.2rem; margin-bottom: 20px; }
+            .product-desc { font-size: 0.85rem; margin-bottom: 25px; }
+            
+            /* Wrap buttons */
+            .color-options { flex-wrap: wrap; gap: 10px; }
+            .color-btn { padding: 8px 15px; font-size: 12px; }
+            .size-options { flex-wrap: wrap; gap: 10px; }
+            .size-btn { width: 45px; height: 45px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-left">
+            <a href="#" id="back-arrow" class="back-arrow">&larr;</a>
+            <a href="index.html"><img src="images/favicon.png" alt="NF Logo" style="height: 80px; width: auto;"></a>
+        </div>
+        
+        <!-- Hamburger Icon (Mobile) -->
+        <div class="menu-toggle" id="mobile-menu">&#9776;</div>
+
+        <!-- Navigation Links -->
+        <div class="nav-links" id="nav-links">
+            <a href="index.html">Home</a>
+            <a href="shop.html">Shop</a>
+            <a href="cart.html">Cart</a>
+        </div>
+    </nav>
+
+    <div class="product-container">
+        <div class="image-section">
+            <img id="main-product-image" src="" alt="Product Image">
+        </div>
+
+        <div class="details-section">
+            <p class="breadcrumb">NOIRFRAME / ESSENTIALS</p>
+            <h1 class="product-title" id="product-name">Loading...</h1>
+            <p class="product-price" id="product-price">₦0</p>
+            <p class="product-desc">A versatile everyday essential with a clean silhouette. Designed to complement your style and move with you throughout the day.</p>
+
+            <h3 class="options-title">Colour</h3>
+            <div class="color-options" id="color-options"></div>
+
+            <h3 class="options-title">Available sizes</h3>
+            <div class="size-options" id="size-options"></div>
+
+            <button class="add-to-cart" id="add-to-cart-btn">ADD TO BAG — DEMO</button>
+            <p class="cart-message">Demo Mode: Item added to cart (no payment processed).</p>
+        </div>
+    </div>
+
+    <script>
+        // Hamburger Menu Logic
+        document.addEventListener("DOMContentLoaded", () => {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navLinks = document.getElementById('nav-links');
+            if (mobileMenu && navLinks) {
+                mobileMenu.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                });
+            }
+        });
+
+        // --- 1. SMART BACK ARROW LOGIC ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const fromSource = urlParams.get('from');
+        const backArrow = document.getElementById('back-arrow');
+
+        if (fromSource === 'shop') {
+            backArrow.href = 'shop.html';
+        } else if (fromSource === 'home') {
+            backArrow.href = 'index.html#shop';
+        } else if (fromSource === 'campaign') {
+            backArrow.href = 'index.html#campaign';
+        } else {
+            backArrow.href = 'shop.html';
+        }
+
+        // --- 2. PRODUCT PAGE LOGIC ---
+        const productName = urlParams.get('name') || 'Essential Tee'; 
+        
+        let allProducts = [];
+        let selectedColor = null;
+        let selectedSize = null;
+
+        document.getElementById('product-name').innerText = productName;
+
+        fetch('/api/products')
+            .then(res => res.json())
+            .then(data => {
+                allProducts = data.filter(p => p.name === productName);
+                if (allProducts.length > 0) {
+                    document.getElementById('product-price').innerText = `₦${allProducts[0].price.toLocaleString()}`;
+                    setupColors();
+                }
+            });
+
+        function setupColors() {
+            const colorContainer = document.getElementById('color-options');
+            const colors = [...new Set(allProducts.map(p => p.color))];
+            const colorHexCodes = {
+                'Ink Black': '#111111',
+                'Charcoal': '#333333',
+                'Bone': '#e8e4d9',
+                'Steel Grey': '#7d878a'
+            };
+
+            colorContainer.innerHTML = '';
+            colors.forEach((color, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'color-btn';
+                const hex = colorHexCodes[color] || '#ffffff';
+                btn.innerHTML = `<span class="color-dot" style="background-color: ${hex};"></span> ${color}`;
+                btn.onclick = () => selectColor(color, btn);
+                colorContainer.appendChild(btn);
+                if (index === 0) btn.click();
+            });
+        }
+
+        function selectColor(color, btn) {
+            selectedColor = color;
+            document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const productWithColor = allProducts.find(p => p.color === color);
+            if (productWithColor) {
+                document.getElementById('main-product-image').src = productWithColor.image;
+            }
+            setupSizes(color);
+        }
+
+        function setupSizes(color) {
+            const sizeContainer = document.getElementById('size-options');
+            const sizesForColor = allProducts.filter(p => p.color === color);
+            
+            sizeContainer.innerHTML = '';
+            sizesForColor.forEach((product, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'size-btn';
+                btn.innerText = product.size;
+                if (product.stock <= 0) btn.disabled = true;
+                btn.onclick = () => selectSize(product.size, btn);
+                sizeContainer.appendChild(btn);
+                if (index === 0 && product.stock > 0) btn.click();
+            });
+        }
+
+        function selectSize(size, btn) {
+            selectedSize = size;
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        // --- 3. ADD TO CART LOGIC ---
+        document.getElementById('add-to-cart-btn').onclick = () => {
+            if (!selectedColor || !selectedSize) {
+                alert('Please select a colour and size.');
+                return;
+            }
+
+            const product = allProducts.find(p => p.color === selectedColor && p.size === selectedSize);
+            if (!product) return;
+
+            fetch('/api/cart', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    product_name: product.name,
+                    color: product.color,
+                    size: product.size,
+                    price: product.price,
+                    image: product.image
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    const btn = document.getElementById('add-to-cart-btn');
+                    const originalText = btn.innerText;
+                    btn.innerText = "ADDED TO BAG ✓";
+                    btn.style.backgroundColor = "var(--gold)";
+                    btn.style.color = "var(--black)";
+
+                    fetch('/api/cart')
+                        .then(res => res.json())
+                        .then(cart => {
+                            let total = 0;
+                            cart.forEach(item => total += item.quantity);
+                            // If there's a nav cart count, update it (though product page doesn't have one in this HTML, it's safe)
+                            const cartCount = document.getElementById('nav-cart-count');
+                            if(cartCount) cartCount.innerText = `Cart (${total})`;
+                        });
+
+                    setTimeout(() => {
+                        btn.innerText = originalText;
+                        btn.style.backgroundColor = "var(--white)";
+                        btn.style.color = "var(--black)";
+                    }, 2000);
+                }
+            });
+        };
+    </script>
+</body>
+</html>

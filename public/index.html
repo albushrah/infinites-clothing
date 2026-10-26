@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Bag | NOIRFRAME</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,400;0,600;1,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #050505;
+            --white: #ffffff;
+            --bone: #e8e4d9; /* The Bone color is added here */
+            --gold: #cba052;
+            --gray: #151515;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--black); color: var(--white); font-family: 'Montserrat', sans-serif; }
+
+        /* Navigation */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 60px; background-color: transparent; position: absolute; top: 0; width: 100%; z-index: 100; }
+        .logo-text { font-size: 28px; font-weight: 800; letter-spacing: 8px; color: var(--bone); text-decoration: none; }
+        
+        /* Clean Nav Links using Bone */
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: var(--bone); text-decoration: none; font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; transition: color 0.3s ease; }
+        .nav-links a:hover { color: var(--gold); }
+
+        /* Hamburger Menu Icon (Hidden on Desktop) */
+        .menu-toggle { display: none; font-size: 30px; color: var(--bone); cursor: pointer; }
+
+        /* Hero Section */
+        .hero { height: 100vh; display: flex; align-items: center; justify-content: flex-start; padding-left: 10%; background: linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 100%), url('images/hero.jpg') center/cover no-repeat; background-color: #050505; }
+        .hero-content { text-align: left; max-width: 600px; }
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: 6rem; margin-bottom: 0px; font-weight: 400; line-height: 1; letter-spacing: 2px; }
+        .hero h1 span { display: block; color: var(--gold); font-style: italic; font-size: 5rem; margin-top: 5px; }
+        .hero p { font-size: 1.1rem; margin-top: 30px; margin-bottom: 40px; color: #cccccc; line-height: 1.8; letter-spacing: 0.5px; font-weight: 300; }
+        
+        .btn-gold { padding: 16px 45px; background-color: transparent; color: var(--gold); border: 1px solid var(--gold); text-transform: uppercase; letter-spacing: 3px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-block; }
+        .btn-gold:hover { background-color: var(--gold); color: var(--black); }
+
+        /* --- FEATURED COLLECTION (DESKTOP 4 PER ROW) --- */
+        .shop-section { padding: 100px 50px; background-color: var(--black); }
+        .section-title { text-align: center; font-size: 14px; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 50px; color: #888; }
+        
+        .product-grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); /* FIXED: 4 on desktop */
+            gap: 30px; 
+        }
+        
+        .product-card { background-color: var(--gray); border-radius: 2px; overflow: hidden; transition: transform 0.4s ease; }
+        .product-card:hover { transform: translateY(-8px); }
+        .product-image { width: 100%; height: 350px; object-fit: cover; border-bottom: 1px solid #222; }
+        .product-info { padding: 25px 20px; text-align: center; }
+        .product-name { font-size: 1rem; font-weight: 600; margin-bottom: 8px; letter-spacing: 1px; }
+        .product-details { font-size: 0.8rem; color: #888; margin-bottom: 15px; }
+        .product-price { color: var(--gold); font-weight: 800; font-size: 1.1rem; margin-bottom: 20px; }
+        .btn-small { padding: 10px 25px; font-size: 11px; background-color: transparent; color: var(--bone); border: 1px solid #444; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; display: inline-block; }
+        .btn-small:hover { border-color: var(--gold); color: var(--gold); }
+
+        /* --- MOBILE RESPONSIVENESS --- */
+        @media (max-width: 768px) {
+            /* Navigation & Hamburger Menu */
+            nav { flex-direction: row; justify-content: space-between; padding: 20px; position: relative; background-color: var(--black); }
+            .menu-toggle { display: block; }
+            
+            /* Hide links by default on mobile */
+            .nav-links {
+                display: none; 
+                flex-direction: column;
+                width: 100%;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background-color: var(--black);
+                padding: 20px;
+                gap: 20px;
+                text-align: center;
+                border-bottom: 1px solid #333;
+                z-index: 1000;
+            }
+            
+            /* Show links when active class is added */
+            .nav-links.active { display: flex; }
+            .nav-links a { margin: 0; font-size: 14px; }
+            .logo-text { font-size: 22px; }
+
+            /* Hero Section */
+            .hero { height: 80vh; padding-left: 5%; padding-right: 5%; justify-content: center; text-align: center; }
+            .hero h1 { font-size: 3rem; }
+            .hero h1 span { font-size: 2.5rem; }
+            .hero p { font-size: 0.9rem; margin-top: 15px; margin-bottom: 25px; }
+            
+            /* --- FEATURED COLLECTION (MOBILE 2 PER ROW) --- */
+            .shop-section { padding: 50px 15px; }
+            .product-grid { 
+                grid-template-columns: repeat(2, 1fr); /* FIXED: 2 on mobile */
+                gap: 15px; 
+            }
+            .product-image { height: 220px; }
+            .product-info { padding: 15px 5px; }
+            .product-name { font-size: 12px; }
+            .product-details { font-size: 9px; }
+            .product-price { font-size: 14px; }
+            .btn-small { padding: 8px 5px; font-size: 9px; width: 100%; }
+
+            /* Campaign Section (Left exactly as it was) */
+            .campaign-products { grid-template-columns: 1fr; padding: 0 20px 50px; }
+            .product-card { height: 50vh !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Perfect Navigation -->
+        <nav>
+        <!-- Logo -->
+        <div style="display: flex; align-items: center;">
+            <img src="images/logo.png" alt="NOIRFRAME" style="height: 80px; width: auto;">
+        </div>
+        
+        <!-- Right Side Container (Icon + Hamburger + Links) -->
+        <div style="display: flex; align-items: center; gap: 20px;">
+            
+            <!-- Profile Icon (Always visible) -->
+            <div class="account-container" style="position: relative; display: inline-block;">
+                <a href="login.html" id="nav-login-btn" style="color: var(--bone); display: flex; align-items: center; text-decoration: none; transition: 0.3s;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </a>
+                
+                <!-- The Dropdown Menu (Hidden by default) -->
+                <div id="account-dropdown" style="display: none; position: absolute; top: 100%; right: 0; margin-top: 15px; background: #151515; border: 1px solid #333; border-radius: 4px; min-width: 150px; z-index: 999;">
+                    <a href="#" onclick="logoutUser()" style="display: block; padding: 12px 20px; color: #ff4444; text-decoration: none; font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; text-align: center;">Log Out</a>
+                </div>
+            </div>
+
+            <!-- Hamburger Icon (Mobile only) -->
+            <div class="menu-toggle" id="mobile-menu">&#9776;</div>
+
+            <!-- Nav Links (This becomes the dropdown on mobile) -->
+            <div class="nav-links" id="nav-links">
+                <a href="shop.html">Shop</a>
+                <a href="#shop">Collections</a>
+                <a href="cart.html" id="nav-cart-count">Cart (0)</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1>NOIRFRAME <span>Streetwear</span></h1>
+            <p>Elevate your everyday wardrobe with premium, contemporary fashion. Designed for those who demand excellence.</p>
+            <a href="shop.html" class="btn-gold">SHOP NOW &rarr;</a>
+        </div>
+    </header>
+
+    <!-- Featured Collection Section -->
+    <section class="shop-section" id="shop">
+        <h2 class="section-title">Featured Collection</h2>
+        <div class="product-grid" id="product-container"></div>
+    </section>
+    
+    <!-- Campaign Section (Left exactly as it was) -->
+    <section id="campaign" style="background-color: var(--black); padding-top: 100px;">
+        <div style="text-align: center; padding: 0 20px 80px;">
+            <p style="font-size: 14px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; font-weight: 600;">Dark Matter Vol. 1</p>
+            <h2 style="font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 400; margin-bottom: 30px;">Born in the <span style="font-style: italic; color: var(--bone);">Shadows.</span></h2>
+            <p style="font-family: 'Playfair Display', serif; font-size: 1.5rem; line-height: 1.5; color: #aaa; max-width: 800px; margin: 0 auto;">Designed for the unseen. The rule-breakers. The ones who move in silence but leave a lasting impression. This is not just clothing; it is an armor for the modern world.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 0 20px; max-width: 1400px; margin: 0 auto;" class="campaign-products">
+            <!-- First Look -->
+            <div class="product-card" style="position: relative; overflow: hidden; border-radius: 4px; height: 70vh;">
+                <img src="images/hero-black.jpg" alt="Dark Matter Look" style="width: 100%; height: 100%; object-fit: cover;">
+                <div style="position: absolute; bottom: 30px; left: 30px;">
+                    <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 10px;">The Dark Matter Look</h3>
+                     <a href="product.html?name=Tech%20Windbreaker&from=campaign" style="color: var(--white); text-decoration: none; font-size: 12px; letter-spacing: 2px; border-bottom: 1px solid var(--white); padding-bottom: 5px;">Shop the Look</a>
+                </div>
+            </div>
+            
+            <!-- Second Look -->
+            <div class="product-card" style="position: relative; overflow: hidden; border-radius: 4px; height: 70vh;">
+                <img src="images/hero-bone.jpg" alt="Bone Look" style="width: 100%; height: 100%; object-fit: cover;">
+                <div style="position: absolute; bottom: 30px; left: 30px;">
+                    <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 10px;">The Bone Essentials</h3>
+                    <a href="product.html?name=Washed%20Hoodie&from=campaign" style="color: var(--white); text-decoration: none; font-size: 12px; letter-spacing: 2px; border-bottom: 1px solid var(--white); padding-bottom: 5px;">Shop the Look</a>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; padding: 80px 0;">
+            <a href="shop.html" style="padding: 20px 60px; background-color: var(--white); color: var(--black); text-decoration: none; font-weight: 800; letter-spacing: 2px; font-size: 14px; display: inline-block;">EXPLORE THE FULL COLLECTION</a>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer style="background-color: #0a1128; border-top: 1px solid #1a2b4c; padding: 60px 20px 30px; text-align: center; font-family: 'Montserrat', sans-serif;">
+        
+        <!-- Social Icons Row -->
+        <div style="margin-bottom: 30px; display: flex; justify-content: center; gap: 30px; align-items: center;">
+            
+            <!-- Instagram SVG -->
+            <a href="https://instagram.com/YOURPAGE" target="_blank" style="color: #e8e4d9; transition: 0.3s;" onmouseover="this.style.color='#cba052'" onmouseout="this.style.color='#e8e4d9'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+            </a>
+
+            <!-- Facebook SVG -->
+            <a href="https://facebook.com/YOURPAGE" target="_blank" style="color: #e8e4d9; transition: 0.3s;" onmouseover="this.style.color='#cba052'" onmouseout="this.style.color='#e8e4d9'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                </svg>
+            </a>
+
+            <!-- X (Twitter) SVG -->
+            <a href="https://x.com/YOURPAGE" target="_blank" style="color: #e8e4d9; transition: 0.3s;" onmouseover="this.style.color='#cba052'" onmouseout="this.style.color='#e8e4d9'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/>
+                </svg>
+            </a>
+
+        </div>
+        
+        <p style="color: #888; font-size: 12px; letter-spacing: 1px; margin-bottom: 10px;">
+            &copy; 2026 NOIRFRAME. ALL RIGHTS RESERVED.
+        </p>
+        <p style="color: #555; font-size: 10px; letter-spacing: 2px; text-transform: uppercase;">
+            Dark Matter Collection
+        </p>
+    </footer>
+    
+    <script>
+        // --- HAMBURGER MENU LOGIC ---
+        document.addEventListener("DOMContentLoaded", () => {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navLinks = document.getElementById('nav-links');
+            
+            if (mobileMenu && navLinks) {
+                mobileMenu.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                });
+            }
+        });
+
+        let allProducts = [];
+
+        fetch('/api/products')
+            .then(response => response.json())
+            .then(products => {
+                allProducts = products;
+                renderCategories();
+            })
+            .catch(error => console.error('Error:', error));
+
+        function renderCategories() {
+            const container = document.getElementById('product-container');
+            container.innerHTML = ''; 
+
+            const categories = [
+                { name: 'Essential Tee', category: 'Tees', title: 'Tops', img: 'images/tee-ink-black.jpg' },
+                { name: 'Washed Hoodie', category: 'Hoodies', title: 'Hoodies', img: 'images/hoodie-ink-black.jpg' },
+                { name: 'Utility Cargo Pants', category: 'Bottoms', title: 'Bottoms', img: 'images/cargo-ink-black.jpg' },
+                { name: 'Tech Windbreaker', category: 'Outerwear', title: 'Outerwear', img: 'images/jacket-ink-black.jpg' }
+            ];
+
+            categories.forEach(cat => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.style.cursor = 'pointer';
+                
+                card.onclick = () => {
+                    window.location.href = `product.html?name=${encodeURIComponent(cat.name)}&from=home`;
+                };
+                
+                card.innerHTML = `
+                    <img src="${cat.img}" alt="${cat.title}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">${cat.title}</h3>
+                        <p class="product-details">View All Colors</p>
+                        <button class="btn-small" style="pointer-events: none;">Explore</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Update cart count in nav
+        fetch('/api/cart')
+            .then(res => res.json())
+            .then(cart => {
+                let total = 0;
+                cart.forEach(item => total += item.quantity);
+                document.getElementById('nav-cart-count').innerText = `Cart (${total})`;
+            });               
+        
+        // --- USER LOGIN & DROPDOWN LOGIC ---
+        document.addEventListener("DOMContentLoaded", () => {
+            const user = localStorage.getItem('noirframe_user');
+            const loginBtn = document.getElementById('nav-login-btn');
+            const dropdown = document.getElementById('account-dropdown');
+
+            if (user && loginBtn && dropdown) {
+                const userData = JSON.parse(user);
+                
+                // Change text to "HI, NAME"
+                loginBtn.style.color = 'var(--gold)'; // Make it gold
+loginBtn.title = `Hi, ${userData.name}`; // Shows their name when hovering over the icon
+                
+                // When they click their name, show/hide the dropdown
+                loginBtn.onclick = (e) => {
+                    e.preventDefault(); // Stop page reload
+                    if (dropdown.style.display === 'none') {
+                        dropdown.style.display = 'block';
+                    } else {
+                        dropdown.style.display = 'none';
+                    }
+                };
+
+                // Close dropdown if they click outside of it
+                document.addEventListener('click', (e) => {
+                    if (!loginBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                        dropdown.style.display = 'none';
+                    }
+                });
+            }
+        });
+
+        // Function to log out
+        function logoutUser() {
+            localStorage.removeItem('noirframe_user');
+            window.location.href = 'login.html'; // Redirect to login page
+        }
+    </script>
+</body>
+</html>
