@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders | NOIRFRAME</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,400;0,600;1,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #050505;
+            --white: #ffffff;
+            --bone: #e8e4d9;
+            --gold: #cba052;
+            --gray: #151515;
+            --border: #333;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--black); color: var(--white); font-family: 'Montserrat', sans-serif; }
+
+        /* Navigation */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 60px; border-bottom: 1px solid var(--border); }
+        .logo-text { font-size: 28px; font-weight: 800; letter-spacing: 8px; color: var(--bone); text-decoration: none; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: var(--bone); text-decoration: none; font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; }
+        .nav-links a:hover { color: var(--gold); }
+
+        /* Main Container */
+        .orders-container { max-width: 1000px; margin: 60px auto; padding: 0 20px; }
+        .header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+        .header h1 { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 400; }
+        .header p { color: #888; font-size: 14px; }
+
+        /* Order Cards */
+        .order-card { background-color: var(--gray); border: 1px solid var(--border); border-radius: 4px; padding: 25px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
+        .order-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+        
+        .order-info h3 { font-size: 1.1rem; margin-bottom: 8px; color: var(--white); }
+        .order-info p { font-size: 13px; color: #888; margin-bottom: 5px; }
+        
+        .order-total { text-align: right; }
+        .order-total h2 { font-size: 1.5rem; color: var(--gold); margin-bottom: 8px; }
+        .status-badge { background-color: rgba(203, 160, 82, 0.2); color: var(--gold); padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: 1px; }
+        
+        .empty-state { text-align: center; padding: 80px 0; color: #888; }
+        .empty-state h2 { font-size: 1.5rem; margin-bottom: 20px; color: var(--white); }
+        .empty-state a { color: var(--gold); text-decoration: none; font-weight: 600; }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            nav { flex-direction: column; padding: 20px; gap: 15px; }
+            .nav-links { gap: 15px; flex-wrap: wrap; justify-content: center; }
+            .header { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .header h1 { font-size: 2.5rem; }
+            .order-card { flex-direction: column; align-items: flex-start; gap: 20px; }
+            .order-total { text-align: left; width: 100%; border-top: 1px solid var(--border); padding-top: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+       <nav>
+        <a href="index.html" class="logo-text">NOIRFRAME</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+        </div>
+    </nav>
+
+    <div class="orders-container">
+        <div class="header">
+            <h1>My Orders</h1>
+            <p id="greeting">Welcome back.</p>
+        </div>
+
+        <div id="orders-list">
+            <!-- Orders will load here -->
+            <p style="text-align: center; color: #888;">Loading your orders...</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. Check if user is logged in
+            const userString = localStorage.getItem('noirframe_user');
+            
+            if (!userString) {
+                // If not logged in, kick them to the login page
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const user = JSON.parse(userString);
+            document.getElementById('greeting').innerText = `Logged in as ${user.name}`;
+
+            // 2. Fetch their orders from the backend
+            fetch(`/api/my-orders/${encodeURIComponent(user.name)}`)
+                .then(res => res.json())
+                .then(orders => {
+                    const container = document.getElementById('orders-list');
+                    container.innerHTML = '';
+
+                    if (orders.length === 0) {
+                        container.innerHTML = `
+                            <div class="empty-state">
+                                <h2>You haven't placed any orders yet.</h2>
+                                <a href="shop.html">Start Shopping &rarr;</a>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    // 3. Display the orders
+                    orders.forEach(order => {
+                        const date = new Date(order.order_date).toLocaleDateString('en-GB', {
+                            day: 'numeric', month: 'short', year: 'numeric'
+                        });
+
+                        container.innerHTML += `
+                            <div class="order-card">
+                                <div class="order-info">
+                                    <h3>Order #NF-${order.id}</h3>
+                                    <p>Date: ${date}</p>
+                                    <p>Items: Total purchase</p>
+                                </div>
+                                <div class="order-total">
+                                    <h2>₦${order.total_price.toLocaleString()}</h2>
+                                    <span class="status-badge">PAID</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                })
+                .catch(err => {
+                    console.error(err);
+                    container.innerHTML = '<p style="text-align: center; color: red;">Failed to load orders.</p>';
+                });
+        });
+    </script>
+</body>
+</html>

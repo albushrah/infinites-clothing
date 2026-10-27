@@ -183,6 +183,16 @@ app.post('/api/login', async (req, res) => {
         res.status(500).json({ success: false, message: 'Server error' });
     }
 });
+// --- CUSTOMER ORDER HISTORY ROUTE ---
+app.get('/api/my-orders/:name', (req, res) => {
+    const customerName = req.params.name;
+    try {
+        const orders = db.prepare('SELECT * FROM orders WHERE customer_name = ? ORDER BY id DESC').all(customerName);
+        res.json(orders);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to load order history' });
+    }
+});
 // --- START THE SERVER ---
 app.delete('/api/cart/:id', (req, res) => {
     try {

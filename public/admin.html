@@ -9,17 +9,20 @@
     <style>
         :root { --black: #050505; --white: #ffffff; --gold: #cba052; --gray: #151515; --light-gray: #222; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--black); color: var(--white); font-family: 'Montserrat', sans-serif; display: flex; height: 100vh; overflow: hidden; }
+        html, body { height: 100%; overflow: hidden; }
+        body { background-color: var(--black); color: var(--white); font-family: 'Montserrat', sans-serif; display: flex; }
 
         /* Sidebar */
-        .sidebar { width: 250px; flex-shrink: 0; background-color: var(--gray); border-right: 1px solid var(--light-gray); padding: 30px 20px; display: flex; flex-direction: column; }
+        .sidebar { width: 250px; flex-shrink: 0; background-color: var(--gray); border-right: 1px solid var(--light-gray); padding: 30px 20px; display: flex; flex-direction: column; overflow-y: auto; }
         .logo { font-size: 20px; font-weight: 800; letter-spacing: 4px; color: var(--gold); margin-bottom: 40px; text-decoration: none; }
         .nav-item { padding: 15px; color: #aaa; text-decoration: none; font-size: 14px; font-weight: 600; letter-spacing: 1px; border-radius: 4px; margin-bottom: 10px; transition: 0.3s; cursor: pointer; }
         .nav-item:hover, .nav-item.active { background-color: var(--light-gray); color: var(--white); }
+        
+        /* Desktop Exit Buttons */
         .nav-item.logout { margin-top: auto; color: #ff4444; }
 
         /* Main Content */
-        .main-content { flex: 1; padding: 40px; overflow-y: auto; }
+        .main-content { flex: 1; padding: 40px; overflow-y: auto; width: 100%; }
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
         .header h1 { font-size: 2rem; font-weight: 600; }
         
@@ -31,7 +34,7 @@
         .stat-value.gold { color: var(--gold); }
 
         /* Table */
-        .table-container { background-color: var(--gray); border-radius: 8px; border: 1px solid var(--light-gray); padding: 20px; }
+        .table-container { background-color: var(--gray); border-radius: 8px; border: 1px solid var(--light-gray); padding: 20px; overflow-x: auto; }
         .table-container h2 { font-size: 1.2rem; margin-bottom: 20px; font-weight: 600; }
         table { width: 100%; border-collapse: collapse; }
         th { text-align: left; padding: 15px; font-size: 12px; color: #888; border-bottom: 1px solid var(--light-gray); text-transform: uppercase; }
@@ -41,52 +44,74 @@
         .status.paid { background-color: rgba(203, 160, 82, 0.2); color: var(--gold); }
         .status.pending { background-color: rgba(255, 255, 255, 0.1); color: #aaa; }
 
-        /* --- MOBILE RESPONSIVENESS (ONLY ADDED THIS BLOCK) --- */
+        /* Floating Oval Exit Button */
+        .floating-exit {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 15px 30px;
+            background-color: var(--light-gray);
+            border: 2px solid #ff4444;
+            border-radius: 50px;
+            color: #ff4444;
+            font-weight: 800;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            z-index: 9999;
+            transition: 0.3s;
+        }
+        .floating-exit:hover { background-color: #ff4444; color: white; }
+
+        /* --- MOBILE RESPONSIVENESS --- */
         @media (max-width: 768px) {
-            body { flex-direction: column; height: auto; overflow: auto; }
+            body { flex-direction: column; }
             
-            /* Turn sidebar into a top horizontal scroll bar */
+            /* Horizontal scrolling menu */
             .sidebar { 
-                width: 100%; 
-                flex-direction: row; 
-                overflow-x: auto; 
-                padding: 10px; 
-                border-right: none; 
-                border-bottom: 1px solid var(--light-gray); 
-                align-items: center; 
+                width: 100% !important; 
+                display: flex !important;
+                flex-direction: row !important;
+                flex-wrap: nowrap !important;
+                justify-content: flex-start !important;
+                overflow-x: auto !important; 
+                overflow-y: hidden !important;
+                padding: 15px !important; 
+                border-right: none !important; 
+                border-bottom: 1px solid var(--light-gray) !important; 
+                background-color: var(--gray) !important;
+                gap: 10px !important;
+                flex-shrink: 0 !important;
+                height: auto !important;
             }
-            .nav-item { white-space: nowrap; margin-bottom: 0; padding: 10px 15px; font-size: 12px; }
-                        /* Fix the Exit Button to the bottom right of the screen */
-            .nav-item.logout { 
-                position: fixed; 
-                bottom: 20px; 
-                right: 20px; 
-                background-color: #ff4444; 
-                color: white; 
-                z-index: 9999; 
-                padding: 12px 20px; 
-                border-radius: 50px; 
-                box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-                margin: 0;
+            .sidebar::-webkit-scrollbar { display: none; }
+            
+            .logo { display: none !important; }
+            
+            .nav-item { 
+                margin: 0 !important; 
+                padding: 10px 15px !important; 
+                font-size: 12px !important; 
+                background-color: var(--light-gray) !important; 
+                border-radius: 20px !important;
+                white-space: nowrap !important;
+                flex-shrink: 0 !important;
             }
-            .logo { display: none; } /* Hide logo to save space */
-
-            .main-content { padding: 20px; }
-            .header { flex-direction: column; align-items: flex-start; gap: 15px; }
-            .header h1 { font-size: 1.5rem; }
-            .header button { width: 100%; }
-
-            /* Stack stats into 2 columns */
-            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .stat-card { padding: 15px; }
-            .stat-value { font-size: 1.5rem; }
-
-            /* Allow tables to scroll horizontally */
-            .table-container { overflow-x: auto; }
-            table { min-width: 500px; }
-
-            /* Fix the Add Product Modal so it fits on screen */
-            #add-product-modal > div { width: 95% !important; padding: 20px !important; max-height: 90vh; overflow-y: auto; }
+            
+            .nav-item.logout { display: none !important; }
+            .floating-exit { display: block !important; }
+            
+            .main-content { padding: 20px !important; }
+            .header { flex-direction: column !important; align-items: flex-start !important; gap: 15px !important; }
+            .header h1 { font-size: 1.5rem !important; }
+            .header button { width: 100% !important; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
+            .stat-card { padding: 15px !important; }
+            .stat-value { font-size: 1.5rem !important; }
+            #add-product-modal > div { width: 95% !important; padding: 20px !important; max-height: 90vh !important; overflow-y: auto !important; }
             #add-product-modal form > div { grid-template-columns: 1fr !important; gap: 10px !important; }
         }
     </style>
@@ -99,7 +124,17 @@
         <div class="nav-item" onclick="showTab('products', this)">Products</div>
         <div class="nav-item" onclick="showTab('orders', this)">Orders</div>
         <div class="nav-item" onclick="showTab('customers', this)">Customers</div>
-        <div class="nav-item logout" onclick="localStorage.removeItem('noirframe_admin'); window.location.href='index.html'">Exit to Store</div><div class="nav-item logout" onclick="localStorage.removeItem('noirframe_admin'); window.location.href='index.html'">Exit to Store</div>
+        
+        <!-- Desktop Exit Button (NOW WITH ?view=store SO IT ACTUALLY WORKS) -->
+        <div class="nav-item logout" onclick="window.location.href='index.html?view=store'">Exit to Store</div>
+        
+        <!-- Desktop Logout Button -->
+        <div class="nav-item" onclick="localStorage.removeItem('noirframe_admin'); window.location.href='admin-login.html'" style="color: #888; font-size: 12px; text-align: center; margin-top: 10px; border: 1px solid #333;">Log Out (Admin)</div>
+    </div>
+
+    <!-- Mobile Floating Oval Exit Button (NOW WITH ?view=store) -->
+    <div class="floating-exit" onclick="window.location.href='index.html?view=store'">
+        EXIT STORE
     </div>
 
     <div class="main-content">
@@ -268,7 +303,7 @@
             </form>
         </div>
     </div>
-       
+
     <script>
         // Security Check: Kick them out if they aren't an admin
         if (localStorage.getItem('noirframe_admin') !== 'true') {

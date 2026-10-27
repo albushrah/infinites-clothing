@@ -44,7 +44,7 @@
             e.preventDefault();
             const password = document.getElementById('admin-password').value;
 
-            // This is the secret password to access the admin dashboard
+            // The secret password is now correctly set
             if (password === 'f@h!zmueeb2268') {
                 localStorage.setItem('noirframe_admin', 'true');
                 window.location.href = 'admin.html';
