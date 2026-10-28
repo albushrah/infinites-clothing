@@ -31,6 +31,44 @@
         
         .pay-btn { width: 100%; padding: 20px; background: var(--gold); color: var(--black); border: none; font-size: 14px; font-weight: 800; letter-spacing: 2px; cursor: pointer; transition: 0.3s; border-radius: 4px; margin-top: 30px; }
         .pay-btn:hover { background: var(--bone); }
+                /* --- MOBILE RESPONSIVENESS FOR CHECKOUT --- */
+        @media (max-width: 768px) {
+            nav { 
+                padding: 20px; 
+                flex-direction: column; 
+                gap: 15px; 
+            }
+            .nav-links a { 
+                margin: 0; 
+                font-size: 12px; 
+            }
+            .checkout-container { 
+                flex-direction: column; 
+                margin: 30px auto; 
+                gap: 30px; 
+                padding: 0 15px;
+            }
+            .checkout-summary {
+                width: 100%;
+                padding: 20px;
+            }
+            .checkout-form h2 {
+                font-size: 1.5rem;
+            }
+            .form-group input {
+                padding: 12px;
+                font-size: 14px;
+            }
+            .pay-btn {
+                padding: 15px;
+                font-size: 13px;
+            }
+        }
+                /* --- TABLET VIEW FOR CHECKOUT --- */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .checkout-container { flex-direction: column; gap: 40px; }
+            .checkout-summary { width: 100%; }
+        }
     </style>
 </head>
 <body>

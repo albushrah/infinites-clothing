@@ -114,6 +114,18 @@
             #add-product-modal > div { width: 95% !important; padding: 20px !important; max-height: 90vh !important; overflow-y: auto !important; }
             #add-product-modal form > div { grid-template-columns: 1fr !important; gap: 10px !important; }
         }
+                /* --- TABLET VIEW FOR ADMIN --- */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .sidebar { width: 200px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); } /* 2x2 grid for stats */
+            .main-content { padding: 20px; }
+        }
+                /* --- FORCE WIDER TABLE ON MOBILE --- */
+        @media (max-width: 768px) {
+            table { 
+                min-width: 700px !important; 
+            }
+        }
     </style>
 </head>
 <body>
@@ -419,9 +431,11 @@
                                 <input type="number" id="price-${product.id}" value="${product.price}" style="width: 80px; background: transparent; border: 1px solid #555; color: white; padding: 5px; border-radius: 4px;">
                             </td>
                             <td>${product.stock}</td>
-                            <td>
-                                <button onclick="updatePrice(${product.id})" style="background: var(--gold); border: none; color: black; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-right: 5px;">Save</button>
-                                <button onclick="deleteProduct(${product.id})" style="background: transparent; border: 1px solid #ff4444; color: #ff4444; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Delete</button>
+                                                       <td>
+                                <div style="display: flex; gap: 5px; align-items: center;">
+                                    <button onclick="updatePrice(${product.id})" style="background: var(--gold); border: none; color: black; padding: 5px 10px; border-radius: 4px; cursor: pointer; white-space: nowrap;">Save</button>
+                                    <button onclick="deleteProduct(${product.id})" style="background: transparent; border: 1px solid #ff4444; color: #ff4444; padding: 5px 10px; border-radius: 4px; cursor: pointer; white-space: nowrap;">Delete</button>
+                                </div>
                             </td>
                         `;
                         tbody.appendChild(tr);

@@ -38,7 +38,24 @@
         
         .btn-gold { padding: 16px 45px; background-color: transparent; color: var(--gold); border: 1px solid var(--gold); text-transform: uppercase; letter-spacing: 3px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-block; }
         .btn-gold:hover { background-color: var(--gold); color: var(--black); }
-
+  
+          /* Campaign Button Desktop & Mobile */
+        .campaign-btn {
+            padding: 15px 40px;
+            background-color: var(--white);
+            color: var(--black);
+            text-decoration: none;
+            font-weight: 800;
+            letter-spacing: 2px;
+            font-size: 12px;
+            display: inline-block;
+            border-radius: 50px; /* This makes it an oval/pill shape */
+            transition: 0.3s;
+        }
+        .campaign-btn:hover {
+            background-color: var(--gold);
+            color: var(--white);
+        }
         /* --- FEATURED COLLECTION (DESKTOP 4 PER ROW) --- */
         .shop-section { padding: 100px 50px; background-color: var(--black); }
         .section-title { text-align: center; font-size: 14px; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 50px; color: #888; }
@@ -79,7 +96,27 @@
                 text-align: center;
                 border-bottom: 1px solid #333;
                 z-index: 1000;
+                       /* Fix Logo Size on Mobile */
+            nav div img {
+                height: 45px !important; /* Shrinks the logo so it doesn't clash */
             }
+
+            /* Fix the Campaign Button on Mobile */
+                        .campaign-btn {
+                display: inline-block !important;
+                width: 85% !important;
+                max-width: 300px !important;
+                margin: 0 auto !important;
+                padding: 15px 20px !important;
+                background-color: var(--white);
+                color: var(--black);
+                text-decoration: none;
+                font-weight: 800;
+                letter-spacing: 2px;
+                font-size: 12px !important;
+                text-align: center;
+                border-radius: 4px;
+            }}
             
             /* Show links when active class is added */
             .nav-links.active { display: flex; }
@@ -106,13 +143,71 @@
             .btn-small { padding: 8px 5px; font-size: 9px; width: 100%; }
 
             /* Campaign Section (Left exactly as it was) */
-            .campaign-products { grid-template-columns: 1fr; padding: 0 20px 50px; }
-            .product-card { height: 50vh !important; }
+            .campaign-products { grid-template-columns: 1fr !important; padding: 0 20px 50px; }
+            .campaign-products .product-card { height: 50vh !important; }
 
             /* --- FOOTER MOBILE FIX (2 COLUMNS) --- */
             footer > div:first-child {
                 grid-template-columns: repeat(2, 1fr) !important;
                 gap: 30px !important;
+            }
+        }
+                /* --- TABLET VIEW FOR HOMEPAGE --- */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .product-grid { grid-template-columns: repeat(3, 1fr); } /* 3 items per row on tablet */
+            .campaign-products { grid-template-columns: 1fr 1fr; }
+            footer > div:first-child { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+                /* --- FIX FOR TABLET & MOBILE GRID --- */
+        @media (max-width: 1024px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 20px !important;
+            }
+            .product-image {
+                height: 250px !important; 
+                object-fit: contain !important; /* This makes the full image show without cutting off */
+                background-color: #e0e0e0 !important; /* Adds a grey background behind the image */
+            }
+            .product-info {
+                padding: 15px 10px !important;
+            }
+            /* Bring the button back, but make it neat */
+            .product-info .btn-small {
+                display: inline-block !important;
+                padding: 10px 20px !important;
+                margin-top: 10px;
+                width: auto !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product-image {
+                height: 200px !important; 
+            }
+            .product-name {
+                font-size: 14px !important;
+            }
+            .product-details {
+                font-size: 11px !important;
+            }
+        }
+                /* --- FORCE CAMPAIGN SIDE-BY-SIDE ON TABLET --- */
+        @media (min-width: 600px) {
+            .campaign-products {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important; /* Forces 2 columns */
+            }
+            .campaign-products .product-card {
+                height: 50vh !important; 
+            }
+        }
+
+        /* --- KEEP THEM STACKED ON PHONES --- */
+        @media (max-width: 599px) {
+            .campaign-products {
+                display: grid !important;
+                grid-template-columns: 1fr !important; /* Forces 1 column */
             }
         }
     </style>
@@ -203,7 +298,7 @@
         </div>
         
         <div style="text-align: center; padding: 80px 0;">
-            <a href="shop.html" style="padding: 20px 60px; background-color: var(--white); color: var(--black); text-decoration: none; font-weight: 800; letter-spacing: 2px; font-size: 14px; display: inline-block;">EXPLORE THE FULL COLLECTION</a>
+           <a href="shop.html" class="campaign-btn">EXPLORE COLLECTION</a>
         </div>
     </section>
     
@@ -332,14 +427,14 @@
                     window.location.href = `product.html?name=${encodeURIComponent(cat.name)}&from=home`;
                 };
                 
-                card.innerHTML = `
-                    <img src="${cat.img}" alt="${cat.title}" class="product-image">
-                    <div class="product-info">
-                        <h3 class="product-name">${cat.title}</h3>
-                        <p class="product-details">View All Colors</p>
-                        <button class="btn-small" style="pointer-events: none;">Explore</button>
-                    </div>
-                `;
+                            card.innerHTML = `
+                <img src="${cat.img}" alt="${cat.title}" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-name">${cat.title}</h3>
+                    <p class="product-details">View All Colors</p>
+                    <a href="product.html?name=${encodeURIComponent(cat.name)}&from=home" class="btn-small" style="text-decoration: none; color: var(--bone); display: inline-block;">EXPLORE</a>
+                </div>
+            `;
                 container.appendChild(card);
             });
         }

@@ -66,6 +66,7 @@
 
         /* --- MOBILE RESPONSIVENESS & HAMBURGER MENU --- */
         @media (max-width: 768px) {
+            nav img { height: 45px !important; }
             nav { flex-direction: row; justify-content: space-between; padding: 20px; position: relative; }
             .menu-toggle { display: block; }
             
@@ -100,6 +101,32 @@
             
             /* Summary */
             .order-summary { position: static; width: 100%; padding: 20px; }
+        }
+                /* --- TABLET VIEW FOR CART --- */
+        @media (min-width: 600px) and (max-width: 1024px) {
+            .cart-layout { 
+                flex-direction: column !important; /* Stack the items and summary */
+            }
+            .cart-item { 
+                flex-direction: row !important; /* Keep image and text side by side */
+                align-items: center !important;
+                position: relative !important; 
+            }
+            .cart-item img { 
+                width: 150px !important; 
+                height: 180px !important;
+                object-fit: cover;
+            }
+            .item-price { 
+                position: static !important; /* Stop the price from floating and getting cut off */
+                margin-left: auto !important; 
+                font-size: 1.2rem !important;
+            }
+            .order-summary {
+                position: static !important;
+                width: 100% !important;
+                margin-top: 30px !important;
+            }
         }
     </style>
 </head>

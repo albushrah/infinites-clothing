@@ -22,6 +22,16 @@
 
         .submit-btn { width: 100%; padding: 15px; background: var(--gold); color: var(--black); border: none; font-size: 14px; font-weight: 800; letter-spacing: 2px; cursor: pointer; transition: 0.3s; border-radius: 4px; }
         .submit-btn:hover { background: var(--white); }
+                /* --- MOBILE FIX FOR ADMIN LOGIN --- */
+        @media (max-width: 768px) {
+            .login-box {
+                width: 90% !important; /* Gives it space on the sides */
+                padding: 40px 20px !important; /* Adjusts inner spacing */
+            }
+            .login-box h1 {
+                font-size: 1.2rem !important;
+            }
+        }
     </style>
 </head>
 <body>
